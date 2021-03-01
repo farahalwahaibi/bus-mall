@@ -103,6 +103,8 @@ function handelClick(event) {
 
       console.log(BussMall.all);
     }
+  } else {
+    renderChart();
   }
 }
 
@@ -121,9 +123,9 @@ function getResult() {
   parentElement.appendChild(articleElement);
 
   for (let i = 0; i < BussMall.all.length; i++) {
-    const pElement = document.createElement('p');
-    articleElement.appendChild(pElement);
-    pElement.textContent = BussMall.all[i].name + 'had' + BussMall.all[i].clicks + 'votes, and was seen' + BussMall.all[i].shown + 'times';
+    const ulElement = document.createElement('ul');
+    articleElement.appendChild(ulElement);
+    ulElement.textContent = BussMall.all[i].name + ' had ' + BussMall.all[i].clicks + ' votes, and was seen ' + BussMall.all[i].shown + ' times';
   }
 
   button.removeEventListener('click', getResult);
@@ -137,4 +139,51 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+renderNewProducts();
 
+function renderChart() {
+
+  let nameArray = [];
+  let clicksArray = [];
+  let shownArray = [];
+
+  for(let i = 0; i < BussMall.all.length; i++) {
+    nameArray.push(BussMall.all[i].name);
+    clicksArray.push(BussMall.all[i].clicks);
+    shownArray.push(BussMall.all[i].shown);
+
+  }
+
+  let ctx = document.getElementById( 'myChart' ).getContext( '2d' );
+  new Chart( ctx, {
+    type: 'bar',
+    data: {
+      labels: nameArray,
+      datasets: [
+        {
+          label: '# of Votes',
+          data: clicksArray,
+          backgroundColor: 'rgba(97, 49, 129, 0.2)',
+          borderColor: 'rgba(97, 49, 129, 1)',
+          borderWidth: 3
+        },
+        {
+          label: '# of Seen',
+          data: shownArray,
+          backgroundColor: 'rgba(228, 147, 26, 0.2)',
+          borderColor: 'rgba(228, 147, 26, 1)',
+          borderWidth: 3
+        },
+      ]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  } );
+}

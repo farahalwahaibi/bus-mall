@@ -57,3 +57,10 @@
   footer p {
     width: 100%;
   }
+
+  #View-Results {
+    text-align: center;
+    color:black;
+    background-color: blanchedalmond;
+    text-transform: capitalize;
+  }
